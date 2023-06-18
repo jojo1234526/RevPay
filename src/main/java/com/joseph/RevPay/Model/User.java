@@ -2,8 +2,11 @@ package com.joseph.RevPay.Model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+// I had to create a table and name the table app_user because of table being called User causing error
+@Table(name = "app_user") // <-- Update the table name here
 public class User {
     @Id
     @GeneratedValue
