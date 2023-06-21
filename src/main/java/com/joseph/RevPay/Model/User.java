@@ -1,12 +1,17 @@
 package com.joseph.RevPay.Model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 // I had to create a table and name the table app_user because of table being called User causing error
 @Table(name = "app_user") // <-- Update the table name here
+
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue
@@ -70,6 +75,28 @@ public class User {
     public void setBalance(double balance){
         this.balance=balance;
     }
+
+    public List<Transaction> getSentTransactions() {
+        return sentTransactions;
+    }
+
+    public void setSentTransactions(List<Transaction> sentTransactions) {
+        this.sentTransactions = sentTransactions;
+    }
+
+    public List<Transaction> getReceivedTransactions() {
+        return receivedTransactions;
+    }
+
+    public void setReceivedTransactions(List<Transaction> receivedTransactions) {
+        this.receivedTransactions = receivedTransactions;
+    }
+
+    @OneToMany(mappedBy = "sender")
+    private List<Transaction> sentTransactions;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<Transaction> receivedTransactions;
 
 
 
