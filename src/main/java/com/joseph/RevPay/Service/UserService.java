@@ -13,6 +13,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public User register(User user){
+        user.setBalance(10000);
         return userRepository.save(user);
     }
 
