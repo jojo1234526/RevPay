@@ -2,6 +2,7 @@ package com.joseph.RevPay.Service;
 
 import com.joseph.RevPay.Model.User;
 import com.joseph.RevPay.Repository.UserRepository;
+import com.joseph.RevPay.dto.MoneyTransferDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,24 @@ public class UserService {
         userRepository.save(receiver);
     }
 
+    public void sendMoney(MoneyTransferDto moneyTransferDto) throws Exception {
+        User sender = userRepository.findById(moneyTransferDto.getSenderId()).orElseThrow(() -> new Exception("Sender not found."));
+        User receiver = userRepository.findById(moneyTransferDto.getReceiverId()).orElseThrow(() -> new Exception("Receiver not found."));
+
+        if(sender.getBalance() < moneyTransferDto.getAmount()) {
+            throw new Exception("Sender does not have enough balance.");
+        }
+
+        if(moneyTransferDto.getAmount() <= 0) {
+            throw new Exception("Invalid amount.");
+        }
+
+        sender.setBalance(sender.getBalance() - moneyTransferDto.getAmount());
+        receiver.setBalance(receiver.getBalance() + moneyTransferDto.getAmount());
+
+        userRepository.save(sender);
+        userRepository.save(receiver);
+    }
 
     public void requestMoney(String requesterUsername, String giverUsername, double amount) throws Exception {
         User requester = userRepository.findByUsername(requesterUsername);
@@ -117,6 +136,11 @@ public class UserService {
         }
         return existingUser;
     }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);  // Implement this method in UserRepository
+    }
+
 }
 
 

@@ -3,6 +3,7 @@ package com.joseph.RevPay.Controller;
 
 import com.joseph.RevPay.Model.User;
 import com.joseph.RevPay.Service.UserService;
+import com.joseph.RevPay.dto.MoneyTransferDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,29 @@ public class UserController {
     public ResponseEntity<User> login(@RequestBody User user){
         return ResponseEntity.ok(userService.login(user.getUsername(), user.getPassword()));
     }
+    @GetMapping("/username/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        User user = userService.findUserByUsername(username);  // Implement this method in UserService
+        if(user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    @PostMapping("/send")
+    public ResponseEntity<String> sendMoney(@RequestBody MoneyTransferDto moneyTransferDto){
+        try {
+            userService.sendMoney(moneyTransferDto);
+            return ResponseEntity.ok("Money sent successfully");
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+
+
 
 //    @PostMapping("/send")
 //    public ResponseEntity<String> sendMoney(@RequestParam String senderUsername, @RequestParam String receiverUsername, @RequestParam double amount){
@@ -40,16 +64,16 @@ public class UserController {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 //        }
 //    }
-
-    @PostMapping("/send")
-    public ResponseEntity<String> sendMoney(@RequestParam Long senderId, @RequestParam Long receiverId, @RequestParam double amount){
-        try {
-            userService.sendMoney(senderId, receiverId, amount);
-            return ResponseEntity.ok("Money sent successfully");
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
+//
+//    @PostMapping("/send")
+//    public ResponseEntity<String> sendMoney(@RequestParam Long senderId, @RequestParam Long receiverId, @RequestParam double amount){
+//        try {
+//            userService.sendMoney(senderId, receiverId, amount);
+//            return ResponseEntity.ok("Money sent successfully");
+//        } catch(Exception e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//    }
 
 
 
