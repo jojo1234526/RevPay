@@ -1,0 +1,23 @@
+Docker: Docker is a container management tool. we can use it to build and manage containers.
+Docker is very popular, because of how easy it is to use as well as it's central repository
+of pre-built images that we can use locally (i.e. DockerHub)
+
+Containers and Virtual Machines.
+
+Virtual Machines are useful, because we virtualize the hardware. This makes it easier to manage
+large clusters and networks of compute instance because we don't need to buy brand new
+hardware everytime we need a new computer instance.
+
+
+With containers, the virtualization happens at the Operating System level. This is why we need a
+linux kernel or subsystem to run linux containers. Containers are much more lightweight than
+VM/s because we don't need to keep a copy of the OS libraries.
+
+
+How do we build our own Containers?
+
+Define a Dockerfile --> Build an image --> Run a Container
+
+My goal is to create an image that can be used to run my app
+
+Example1: We build the jar file and copy over the jar to our image
